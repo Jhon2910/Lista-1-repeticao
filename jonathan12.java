@@ -6,15 +6,18 @@ public class jonathan12 {
 
         final int TOTAL_CIDADES = 5;
 
-        String cidadeMaiorAcidente = "", cidadeMenorAcidente = "";
-        int maiorAcidente = Integer.MIN_VALUE;
-        int menorAcidente = Integer.MAX_VALUE;
+        String cidadeMaiorIndice = "", cidadeMenorIndice = "";
+        double maiorIndice = Double.MIN_VALUE;
+        double menorIndice = Double.MAX_VALUE;
 
         int somaVeiculos = 0;
-        int somaAcidentes = 0;
+        int somaAcidentesMenos200 = 0;
+        int cidadesMenos200 = 0;
+
+        System.out.println("== Levantamento de dados de trânsito em 5 cidades ==\n");
 
         for (int i = 1; i <= TOTAL_CIDADES; i++) {
-            System.out.println("\nCidade " + i + ":");
+            System.out.println("Cidade " + i + ":");
 
             System.out.print("Nome da cidade: ");
             String nome = sc.nextLine();
@@ -22,30 +25,45 @@ public class jonathan12 {
             System.out.print("Número de veículos: ");
             int veiculos = sc.nextInt();
 
-            System.out.print("Número de acidentes de trânsito: ");
+            System.out.print("Número de acidentes: ");
             int acidentes = sc.nextInt();
             sc.nextLine(); 
 
-            somaVeiculos += veiculos;
-            somaAcidentes += acidentes;
+            double indice = (double) acidentes / veiculos;
 
-            if (acidentes > maiorAcidente) {
-                maiorAcidente = acidentes;
-                cidadeMaiorAcidente = nome;
+            System.out.printf("Índice de acidentes: %.4f\n\n", indice);
+
+            somaVeiculos += veiculos;
+
+            if (veiculos < 200) {
+                somaAcidentesMenos200 += acidentes;
+                cidadesMenos200++;
             }
 
-            if (acidentes < menorAcidente) {
-                menorAcidente = acidentes;
-                cidadeMenorAcidente = nome;
+            if (indice > maiorIndice) {
+                maiorIndice = indice;
+                cidadeMaiorIndice = nome;
+            }
+
+            if (indice < menorIndice) {
+                menorIndice = indice;
+                cidadeMenorIndice = nome;
             }
         }
 
-        double mediaAcidentes = (double) somaAcidentes / TOTAL_CIDADES;
+        double mediaVeiculos = (double) somaVeiculos / TOTAL_CIDADES;
+        double mediaAcidentesMenos200 = cidadesMenos200 > 0 ?
+                (double) somaAcidentesMenos200 / cidadesMenos200 : 0;
         
-        System.out.println("Cidade com maior número de acidentes: " + cidadeMaiorAcidente + " (" + maiorAcidente + " acidentes)");
-        System.out.println("Cidade com menor número de acidentes: " + cidadeMenorAcidente + " (" + menorAcidente + " acidentes)");
-        System.out.println("Soma total de veículos nas 5 cidades: " + somaVeiculos);
-        System.out.printf("Média de acidentes entre as 5 cidades: %.2f\n", mediaAcidentes);
+        System.out.printf("Maior índice de acidentes: %.4f (Cidade: %s)\n", maiorIndice, cidadeMaiorIndice);
+        System.out.printf("Menor índice de acidentes: %.4f (Cidade: %s)\n", menorIndice, cidadeMenorIndice);
+        System.out.printf("Média de veículos nas 5 cidades: %.2f\n", mediaVeiculos);
+
+        if (cidadesMenos200 > 0) {
+            System.out.printf("Média de acidentes nas cidades com menos de 200 veículos: %.2f\n", mediaAcidentesMenos200);
+        } else {
+            System.out.println("Nenhuma cidade com menos de 200 veículos.");
+        }
 
         sc.close();
     }
