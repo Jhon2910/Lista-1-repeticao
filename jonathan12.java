@@ -1,58 +1,52 @@
-import java.util.Scanner;//olhar
+import java.util.Scanner;
 
 public class jonathan12 {
-    public static void main(String[]args){
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        String cidade,nomeMaior,nomeMenor;
-        double veiculos,acidentes=0,menor=0,maior=0;
-        double somaAcidentes=0,somaVeiculos=0,mediaVeiculos=0,razao=0;
-        double somaAcidentes200=0,mediaAcidentes200=0,quantidade200=0;
+        final int TOTAL_CIDADES = 5;
 
-        for (int i=1;i<=5;i++){
-            System.out.println("Digite o nome da cidade: ");
-            cidade = sc.nextLine();
-            System.out.println("Digite a quantidade de veiculos da cidade "+ cidade +": ");
-            veiculos = sc.nextDouble();
-            System.out.println("Digite o numero de acidentes da cidade "+ acidentes +": ");
-            acidentes = sc.nextDouble();
-            sc.nextLine();//limpar buffer de memória
-            somaAcidentes += acidentes;
+        String cidadeMaiorAcidente = "", cidadeMenorAcidente = "";
+        int maiorAcidente = Integer.MIN_VALUE;
+        int menorAcidente = Integer.MAX_VALUE;
+
+        int somaVeiculos = 0;
+        int somaAcidentes = 0;
+
+        for (int i = 1; i <= TOTAL_CIDADES; i++) {
+            System.out.println("\nCidade " + i + ":");
+
+            System.out.print("Nome da cidade: ");
+            String nome = sc.nextLine();
+
+            System.out.print("Número de veículos: ");
+            int veiculos = sc.nextInt();
+
+            System.out.print("Número de acidentes de trânsito: ");
+            int acidentes = sc.nextInt();
+            sc.nextLine(); 
+
             somaVeiculos += veiculos;
+            somaAcidentes += acidentes;
 
-            if (veiculos < 200){
-                somaAcidentes200 += acidentes;
-                quantidade200++;
+            if (acidentes > maiorAcidente) {
+                maiorAcidente = acidentes;
+                cidadeMaiorAcidente = nome;
             }
-            if (i ==1){
-                maior = acidentes;
-                nomeMaior = cidade;
-                menor = acidentes;
-                nomeMenor = cidade;
-            }
-            else {
-                if (acidentes > maior){
-                    maior = acidentes;
-                    nomeMaior = cidade;
-                }
-                if (acidentes < menor){
-                    menor = acidentes;
-                    nomeMenor = cidade;
-                }
+
+            if (acidentes < menorAcidente) {
+                menorAcidente = acidentes;
+                cidadeMenorAcidente = nome;
             }
         }
-        razao = somaAcidentes/somaVeiculos;
-        mediaVeiculos = somaVeiculos/5;
-        System.out.println("O maior acidente foi: "+maior);
-        System.out.println("O menor acidente foi: "+menor);
-        System.out.println("A razão entre quantidade de acidente :"+razao);
-        System.out.println("A media de veiculos nas 5 cidades é: "+mediaVeiculos);
-        if (quantidade200!=0){
-            mediaAcidentes200 = somaAcidentes200/quantidade200;
-            System.out.println("A media de acidentes na cidade"+mediaAcidentes200+"é : ");
-        }
-        else {
-            System.out.println("Não tem cidades com menos de 200 acidente!");
-        }
+
+        double mediaAcidentes = (double) somaAcidentes / TOTAL_CIDADES;
+        
+        System.out.println("Cidade com maior número de acidentes: " + cidadeMaiorAcidente + " (" + maiorAcidente + " acidentes)");
+        System.out.println("Cidade com menor número de acidentes: " + cidadeMenorAcidente + " (" + menorAcidente + " acidentes)");
+        System.out.println("Soma total de veículos nas 5 cidades: " + somaVeiculos);
+        System.out.printf("Média de acidentes entre as 5 cidades: %.2f\n", mediaAcidentes);
+
+        sc.close();
     }
 }
