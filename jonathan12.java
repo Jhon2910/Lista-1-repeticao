@@ -1,69 +1,73 @@
 import java.util.Scanner;
 
-public class jonathan12 {
-    public static void main(String[] args) {
+public class jonathan {
+    public static void main(String[]args) {
         Scanner sc = new Scanner(System.in);
 
-        final int TOTAL_CIDADES = 5;
+        String cidade;
+        int veiculos;
+        int acidentes;
+        int i;
+        double maiorAcidentes = Double.MIN_VALUE;
+        double menorAcidentes = Double.MAX_VALUE;
+        String nomemaior = " ";
+        String nomemenor = " ";
+        int somaacidentes = 0;
+        int somaveiculos = 0;
+        double mediaacidentes = 0;
 
-        String cidadeMaiorIndice = "", cidadeMenorIndice = "";
-        double maiorIndice = Double.MIN_VALUE;
-        double menorIndice = Double.MAX_VALUE;
+        for (i = 1; i <= 5; i++) {
+            System.out.printf("\nNome da cidade %d: ", i);
+            cidade = sc.nextLine();
+            while (!cidade.matches("[a-zA-Z]+")) {
+                System.out.print("\nTente novamente,Digite apesnas letras validas: ");
+                cidade = sc.nextLine();
+            }
 
-        int somaVeiculos = 0;
-        int somaAcidentesMenos200 = 0;
-        int cidadesMenos200 = 0;
+            System.out.print("Numero de veiculos: ");
+            while (!sc.hasNextInt()) {
+                System.out.print("\nTente novamente,digite apenas numeros inteiros: ");
+                sc.next();
+            }
+            veiculos = sc.nextInt();
 
-        System.out.println("== Levantamento de dados de trânsito em 5 cidades ==\n");
+            System.out.print("Numero de acidentes: ");
+            while (!sc.hasNextInt()) {
+                System.out.print("\nTente novamente,digite apenas numeros inteiros: ");
+                sc.next();
+            }
+            acidentes = sc.nextInt();
+            sc.nextLine();
 
-        for (int i = 1; i <= TOTAL_CIDADES; i++) {
-            System.out.println("Cidade " + i + ":");
+            if (acidentes > maiorAcidentes) {
+                maiorAcidentes = acidentes;
+                nomemaior = cidade;
 
-            System.out.print("Nome da cidade: ");
-            String nome = sc.nextLine();
-
-            System.out.print("Número de veículos: ");
-            int veiculos = sc.nextInt();
-
-            System.out.print("Número de acidentes: ");
-            int acidentes = sc.nextInt();
-            sc.nextLine(); 
-
-            double indice = (double) acidentes / veiculos;
-
-            System.out.printf("Índice de acidentes: %.4f\n\n", indice);
-
-            somaVeiculos += veiculos;
+            }
+            if (acidentes < menorAcidentes) {
+                menorAcidentes = acidentes;
+                nomemenor = cidade;
+            }
 
             if (veiculos < 200) {
-                somaAcidentesMenos200 += acidentes;
-                cidadesMenos200++;
+                mediaacidentes = (double)somaacidentes / i;
             }
 
-            if (indice > maiorIndice) {
-                maiorIndice = indice;
-                cidadeMaiorIndice = nome;
-            }
+            somaacidentes += acidentes;
+            somaveiculos += veiculos;
 
-            if (indice < menorIndice) {
-                menorIndice = indice;
-                cidadeMenorIndice = nome;
-            }
+            sc.nextLine();
+
+
         }
+        double razao = (double)somaacidentes/somaveiculos;
+        double mediaveiculos = (double) somaveiculos / i;
 
-        double mediaVeiculos = (double) somaVeiculos / TOTAL_CIDADES;
-        double mediaAcidentesMenos200 = cidadesMenos200 > 0 ?
-                (double) somaAcidentesMenos200 / cidadesMenos200 : 0;
-        
-        System.out.printf("Maior índice de acidentes: %.4f (Cidade: %s)\n", maiorIndice, cidadeMaiorIndice);
-        System.out.printf("Menor índice de acidentes: %.4f (Cidade: %s)\n", menorIndice, cidadeMenorIndice);
-        System.out.printf("Média de veículos nas 5 cidades: %.2f\n", mediaVeiculos);
-
-        if (cidadesMenos200 > 0) {
-            System.out.printf("Média de acidentes nas cidades com menos de 200 veículos: %.2f\n", mediaAcidentesMenos200);
-        } else {
-            System.out.println("Nenhuma cidade com menos de 200 veículos.");
-        }
+        System.out.printf("\nO maior indice de acidentes e %.2f da cidade %s", maiorAcidentes, nomemaior);
+        System.out.printf("\nO menor indice de acidentes e %.2f da cidade %s", menorAcidentes, nomemenor);
+        System.out.printf("\nA razao entre os acidentes e os veiculos e: %.2f", razao);
+        System.out.printf("\nA media de acidentes nas cidades com menos de 200 veiculos e: %.2f",mediaacidentes);
+        System.out.printf("\nA media de veiculos e: %.2f ",mediaveiculos);
 
         sc.close();
     }
