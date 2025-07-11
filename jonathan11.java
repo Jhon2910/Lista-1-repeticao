@@ -1,53 +1,57 @@
 import java.util.Scanner;
 
 public class jonathan11 {
-    public static void main(String[] args) {
+    public static void main(String[]args) {
         Scanner sc = new Scanner(System.in);
+        int alunos;
+        int i = 1;
+        int soma = 0;
+        String nome;
+        double nota;
+        double menornota = Double.MAX_VALUE;
+        String nomemenor = "";
+        double maiornota = Double.MIN_VALUE;
+        String nomemaior = "";
 
-        System.out.print("Quantos alunos deseja cadastrar? ");
-        int n = sc.nextInt();
+        System.out.print("Digite a quantidade de alunos :");
+        while (!sc.hasNextInt()){
+            System.out.print("Digite numeros validos: ");
+            sc.next();
+        }
+        alunos = sc.nextInt();
         sc.nextLine();
 
-        if (n > 0) {
-            int i = 0;
-            double soma = 0;
-            double maiorNota = Double.MIN_VALUE;
-            double menorNota = Double.MAX_VALUE;
-            String alunoMaiorNota = "";
-            String alunoMenorNota = "";
+        while (i <= alunos) {
+            System.out.printf("\nDigite o nome do %d aluno: ",i);
+            nome = sc.nextLine();
+            System.out.printf("Digite a nota do aluno %s: ",nome);
 
-            while (i < n) {
-                System.out.print("Digite o nome do " + (i + 1) + "º aluno: ");
-                String nome = sc.nextLine();
+            while (!sc.hasNextDouble()) {
+                System.out.print("\nDigite um numero valido:  ");
+                sc.next();
+            }
+            nota = sc.nextDouble();
+            soma += (int) nota;
+            sc.nextLine();
 
-                System.out.print("Digite a nota do " + nome + ": ");
-                double nota = sc.nextDouble();
-                sc.nextLine();
+            if (nota < menornota){
+                menornota = nota;
+                nomemenor = nome;
 
-                soma += nota;
 
-                if (nota > maiorNota) {
-                    maiorNota = nota;
-                    alunoMaiorNota = nome;
-                }
-
-                if (nota < menorNota) {
-                    menorNota = nota;
-                    alunoMenorNota = nome;
-                }
-
-                i++;
+            }
+            if (nota > maiornota){
+                maiornota = nota;
+                nomemaior = nome;
             }
 
-            double media = soma / n;
-            
-            System.out.println("Maior nota: " + maiorNota + " (Aluno: " + alunoMaiorNota + ")");
-            System.out.println("Menor nota: " + menorNota + " (Aluno: " + alunoMenorNota + ")");
-            System.out.println("Soma das notas: " + soma);
-            System.out.printf("Média das notas: %.2f%n", media);
-        } else {
-            System.out.println("Por favor, insira um número positivo de alunos!");
+            i++;
         }
+
+        double media = (double) soma/alunos;
+        System.out.printf("\nA soma das notas e %d e a media das notas e %.2f",soma,media);
+        System.out.printf("\nA menor nota e %.2f do aluno %s",menornota,nomemenor);
+        System.out.printf("\nA maior nota e %.2f do aluno %s",maiornota,nomemaior);
 
         sc.close();
     }
